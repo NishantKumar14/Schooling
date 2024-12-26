@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            height: 200px;
+            position: relative;
+            border: 1px solid green;
+        }
+
+        .para-text {
+            font-size: 19px;
+            font-family: 'Source Sans Pro', sans-serif;
+            position: absolute;
+            top: 10%;
+            left: 20%;
+        }
+
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 65%;
+            left: 45%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .buttons {
+            background-color: #04AA6D !important;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 17px;
+            font-family: 'Source Sans Pro', sans-serif;
+            padding: 6px 18px;
+        }
+
+        .user-card {
+            position: relative;
+            top: 150%;
+            left: 100px;
+            transform: translateX(150%);
+            text-align: center;
+            background-color: #333;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+    </style>
+</head>
+<body style="background-color: #212121; color: #fff;">
+    <!-- 
+    0	UNSENT	                    Client has been created. open() not called yet.
+    1	OPENED	                    open() has been called.
+    2	HEADERS_RECEIVED	        send() has been called, and headers and status are available.
+    3	LOADING	                    Downloading;responseText holds partial data.
+    4	DONE	                    The operation is complete. 
+    -->
+
+    <div class="container">
+        <p class="para-text">When we click on this button. Api will take basic data and displayed in card format.</p>
+        <div class="vertical-center">
+          <button class="buttons">Centered Button</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    const button = document.querySelector('.buttons');
+    const container = document.querySelector('.container');
+    const requestUrl = 'https://api.github.com/users/hiteshchoudhary';
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', requestUrl);
+    xhr.onreadystatechange = function () {
+        console.log(xhr.readyState);
+        if (xhr.readyState === 4) {
+            const data = JSON.parse(this.responseText);
+            button.addEventListener('click', (e) => {
+                console.log(data.avatar_url);
+                console.log(data.name);
+                console.log(data.followers);
+
+                // Remove existing card if any
+                const existingCard = document.querySelector('.user-card');
+                if (existingCard) {
+                    existingCard.remove();
+                }
+
+                const div = document.createElement('div');
+                div.className = 'user-card';
+                div.innerHTML = `
+                    <img src="${data.avatar_url}" alt="Profile Picture" style="width: 100px; border-radius: 50%;">
+                    <h2>Name: ${data.name}</h2>
+                    <p>Followers: ${data.followers}</p>
+                `;
+                div.style.padding = '20px';
+                div.style.margin = '10px';
+                div.style.border = '1px solid #ccc';
+                div.style.borderRadius = '8px';
+
+                container.appendChild(div);
+            });
+        }
+    }
+    xhr.send();
+</script>
+</html>
