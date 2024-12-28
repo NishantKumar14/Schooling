@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
@@ -8,8 +6,15 @@ function App() {
   let [counter, setCounter] = useState(1);
 
   const incrementValue = () => {
-    counter = counter + 1
+    counter = counter + 1;
     setCounter(counter);
+    /*
+      Interview:- 
+        setCounter(prevCounter => prevCounter + 1)
+        setCounter(prevCounter => prevCounter + 1)
+        setCounter(prevCounter => prevCounter + 1)
+        setCounter(prevCounter => prevCounter + 1) 
+    */
   }
 
   const decrementValue = () => {
